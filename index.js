@@ -3,7 +3,7 @@ const AAAA = 28;
 
 import { isIP } from 'net'
 import { format, parse } from 'url'
-const memoize = await import('promise-memoize');
+import * as memoize from 'promise-memoize'
 
 module.exports = setup
 
