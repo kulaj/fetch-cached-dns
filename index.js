@@ -7,7 +7,7 @@ module.exports = setup
 const isRedirect = v => ((v / 100) | 0) === 3
 
 function getReolveURL(hostname) {
-  return 'https://dns.google/resolve?name=' + host
+  return 'https://dns.google/resolve?name=' + hostname
 }
 
 function setup(fetch) {
