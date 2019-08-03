@@ -38,7 +38,8 @@
   },
   "dependencies": {
     "@types/node-fetch": "2.3.2",
-    "promise-memoize": "1.2.1"
+    "promise-memoize": "1.2.1",
+    "net": "1.0.2"
   },
   "devDependencies": {
     "@zeit/eslint-config-node": "0.1.0",
