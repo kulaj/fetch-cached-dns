@@ -1,3 +1,6 @@
+const A = 1;
+const AAAA = 28;
+
 const { isIP } = require('net')
 const { format, parse } = require('url')
 const memoize = require('promise-memoize');
@@ -6,8 +9,8 @@ module.exports = setup
 
 const isRedirect = v => ((v / 100) | 0) === 3
 
-function getReolveURL(hostname) {
-  return 'https://dns.google/resolve?name=' + hostname
+function getResolveURL(hostname) {
+  return 'https://dns.google/resolve?name=' + hostname;
 }
 
 function setup(fetch) {
@@ -17,11 +20,17 @@ function setup(fetch) {
   const { Headers } = fetch
   
   async function _resolve(hostname) {
-    fetch(getReolveURL(hostname))
-      .then(function(response) {
-        const jsonData = response.json();
-        return jsonData["Answer"]["data"]
-    });
+    response = await fetch(getResolveURL(hostname))
+    jsonData = await response.json()
+    if (jsonData.Status != 0) {
+      throw "invalid DNS Lookup"
+    }
+    for (var i = 0; i < jsonData.Answer.length; i++) {
+      var answer = jsonData.Answer[i];
+      if (answer["type"] === A || answer["type"] === AAAA) {
+        return answer["data"];
+      }
+    }
   }
   const resolve = memoize(_resolve);
 
@@ -35,6 +44,7 @@ function setup(fetch) {
         opts.headers.set('Host', parsed.host)
       }
       opts.redirect = 'manual'
+      parsed.host = null;
       parsed.hostname = await resolve(parsed.hostname)
       url = format(parsed)
     }
