@@ -1,7 +1,7 @@
 const A = 1;
 const AAAA = 28;
 
-const isIP = require('react-native-tcp').isIP
+const isIP = require('is-ip');
 const memoize = require('promise-memoize');
 
 module.exports = setup
