@@ -1,9 +1,9 @@
 const A = 1;
 const AAAA = 28;
 
-const { isIP } = require('net')
-const { format, parse } = require('url')
-const memoize = require('promise-memoize');
+import { isIP } from 'net'
+import { format, parse } from 'url'
+const memoize = await import('promise-memoize');
 
 module.exports = setup
 
