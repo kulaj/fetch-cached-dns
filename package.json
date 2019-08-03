@@ -1,6 +1,6 @@
 {
   "name": "@kulaj/fetch-cached-dns",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "A decorator on top of `fetch` that caches the DNS query of the `hostname` of the passed URL",
   "license": "MIT",
   "files": [
@@ -39,7 +39,7 @@
   "dependencies": {
     "@types/node-fetch": "2.3.2",
     "promise-memoize": "1.2.1",
-    "net": "1.0.2"
+    "react-native-tcp": "3.3.1"
   },
   "devDependencies": {
     "@zeit/eslint-config-node": "0.1.0",
