@@ -1,16 +1,29 @@
 const { isIP } = require('net')
 const { format, parse } = require('url')
-const resolve = require('@zeit/dns-cached-resolve').default
+const memoize = require('promise-memoize');
 
 module.exports = setup
 
 const isRedirect = v => ((v / 100) | 0) === 3
+
+function getReolveURL(hostname) {
+  return 'https://dns.google/resolve?name=' + host
+}
 
 function setup(fetch) {
   if (!fetch) {
     fetch = require('node-fetch')
   }
   const { Headers } = fetch
+  
+  async function _resolve(hostname) {
+    fetch(getReolveURL(hostname))
+      .then(function(response) {
+        const jsonData = response.json();
+        return jsonData["Answer"]["data"]
+    });
+  }
+  const resolve = memoize(_resolve);
 
   async function fetchCachedDns(url, opts) {
     const parsed = parse(url)
