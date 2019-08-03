@@ -1,8 +1,7 @@
 const A = 1;
 const AAAA = 28;
 
-import { isIP } from 'net'
-import { format, parse } from 'url'
+const isIP = require('react-native-tcp').isIP
 const memoize = require('promise-memoize');
 
 module.exports = setup
@@ -13,10 +12,7 @@ function getResolveURL(hostname) {
   return 'https://dns.google/resolve?name=' + hostname;
 }
 
-function setup(fetch) {
-  if (!fetch) {
-    fetch = require('node-fetch')
-  }
+function setup() {
   const { Headers } = fetch
   
   async function _resolve(hostname) {
@@ -35,7 +31,7 @@ function setup(fetch) {
   const resolve = memoize(_resolve);
 
   async function fetchCachedDns(url, opts) {
-    const parsed = parse(url)
+    const parsed = new URL(url)
     const ip = isIP(parsed.hostname)
     if (ip === 0) {
       if (!opts) opts = {}
@@ -46,7 +42,7 @@ function setup(fetch) {
       opts.redirect = 'manual'
       parsed.host = null;
       parsed.hostname = await resolve(parsed.hostname)
-      url = format(parsed)
+      url = parsed.toString()
     }
     const res = await fetch(url, opts)
     if (isRedirect(res.status)) {
